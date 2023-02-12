@@ -1,0 +1,36 @@
+---
+# d2:
+#   path: path/to/d2
+
+filters:
+  - d2
+
+execute:
+  echo: true
+  output: true
+---
+# Quarto filter for D2 diagrams
+[D2](https://d2lang.com/) is a diagram scripting language that turns text to diagrams. It stands for Declarative Diagramming. Declarative, as in, you describe what you want diagrammed, it generates the image.
+
+```{.d2}
+x -> y: hello world
+```
+
+This extension implements a filter which uses D2 to render the contents of a code block with class `{.d2}` into an embeddable picture/figure.
+
+## Block attributes
+This extension suppport some useful attributes to control layout and metadata for the generated image. For more advanced usage, see [Quarto documentation](https://quarto.org/docs/authoring/figures.html).
+- Name: `{.d2 name="A name for the HTML image element or ref"}`
+- Caption: `{.d2 width="A caption for the image, supports *Markdown*"}`
+- Width: `{.d2 width=50%}`
+- Height: `{.d2 height=50%}`
+
+## Configuration
+The filter will search for the `d2` binary on the system `PATH` by default. To specify a file path to the D2 executable, you can set `d2.path`:
+
+```yml
+d2:
+  path: path/to/d2
+```
+
+See the [Install section](https://d2lang.com/tour/install) in D2's site for more detailed installation instructions.

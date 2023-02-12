@@ -1,0 +1,4 @@
+{
+    "quarto.path": "bin/quarto/bin/quarto",
+    "quarto.lua.provideTypes": true
+}

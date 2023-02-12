@@ -1,0 +1,3 @@
+# Abstract {.unnumbered}
+
+The collection and analysis of data samples from the radio frequency spectrum has always required human action, partly due to the inherent complexity and density of such data.

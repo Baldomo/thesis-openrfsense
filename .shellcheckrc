@@ -1,0 +1,8 @@
+# Don't highlight unreachable code (SC2317)
+disable=SC2155,SC2164,SC2317
+
+# Enable following external files when sourcing
+external-sources=true
+
+# Look for files in .//home/leo/Documents/Uni/Tesi/book/makesh
+source-path=/home/leo/Documents/Uni/Tesi/book/makesh

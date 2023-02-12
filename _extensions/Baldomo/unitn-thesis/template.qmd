@@ -1,0 +1,14 @@
+---
+title: Thesis title
+author: Name Surname
+date: 01/01/1900
+bibliography: references.bib
+toc: true
+format:
+  unitn-thesis-pdf:
+    bachelors: Computer Science
+    subtitle: Subtitle here
+    thanks: thanks to *Quarto*
+    year: 2021/2022
+    supervisor: Name Surname
+---

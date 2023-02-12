@@ -1,0 +1,7 @@
+title: D2 diagrams
+author: Leonardo Baldin
+version: 1.0.0
+quarto-required: ">=1.3.18"
+contributes:
+  filters:
+    - d2.lua

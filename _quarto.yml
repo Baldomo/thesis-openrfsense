@@ -1,0 +1,36 @@
+project:
+  type: book
+  output-dir: output
+
+bibliography: assets/references.bib
+execute:
+  echo: false
+  output: true
+number-sections: true
+toc: true
+
+book:
+  title: "OpenRFSense"
+  author: "Leonardo Baldin"
+  date: "15/03/2023"
+  chapters:
+    - index.qmd
+    - chapters/chapter1.qmd
+    # - chapters/appendices.qmd
+
+format:
+  unitn-thesis-pdf:
+    bachelors: Computer Science
+    year: 2021/2022
+    supervisor: Fabrizio Granelli
+    keep-tex: false
+    mainfont: TeX Gyre Pagella
+  html:
+    theme: cosmo
+
+filters:
+  - d2
+  - custom-appendices
+
+d2:
+  path: bin/d2/bin/d2

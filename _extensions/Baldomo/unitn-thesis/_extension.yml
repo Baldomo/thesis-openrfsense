@@ -1,0 +1,53 @@
+title: UniTN Thesis Template
+author: Leonardo Baldin
+version: 1.0.0
+quarto-required: ">=1.2.0"
+contributes:
+  formats:
+    pdf:
+      # Indent paragraphs instead of adding space between them
+      indent: true
+      # The titlesec package provides its own mechanism for dealing with
+      # inline/block headings, so we need to disable pandoc's support for it
+      # (see https://stackoverflow.com/q/42916124/120898)
+      block-headings: false
+      # Templates and partials
+      template: latex/template.tex
+      include-in-header:
+        text: |
+          \usepackage{plain}
+          \usepackage{setspace}
+          \usepackage{titlesec}
+      template-partials:
+        - latex/before-body.tex
+        - latex/biblio.tex
+      title-logo:
+        - ./assets/marchio.pdf
+      # Template configuration
+      documentclass: book
+      pagestyle: plain
+      babel-lang: english
+      classoption:
+        - a4paper
+        - 11pt
+        - titlepage
+        - twoside
+        - openany
+      geometry:
+        - paperheight = 29.7cm
+        - paperwidth = 21cm
+        - outer = 1.5cm
+        - inner = 2.5cm
+        - top = 2cm
+        - bottom = 2cm
+      hyperrefoptions:
+        - hidelinks
+      colorlinks: false
+      # TODO: fix indexing of bib as subsection of appendices
+      # TODO: HTML template?
+      cite-method: natbib
+      biblio-style: abbrvnat
+      natbiboptions:
+        - comma
+        - numbers
+        - square
