@@ -103,8 +103,10 @@ $endif$
   \usepackage[$for(microtypeoptions)$$microtypeoptions$$sep$,$endfor$]{microtype}
   \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-$if(indent)$
+$if(indent-first)$
 \usepackage{indentfirst}
+$endif$
+$if(indent)$
 $else$
 \makeatletter
 \@ifundefined{KOMAClassName}{% if non-KOMA class

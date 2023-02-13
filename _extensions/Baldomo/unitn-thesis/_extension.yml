@@ -5,8 +5,6 @@ quarto-required: ">=1.2.0"
 contributes:
   formats:
     pdf:
-      # Indent paragraphs instead of adding space between them
-      indent: true
       # The titlesec package provides its own mechanism for dealing with
       # inline/block headings, so we need to disable pandoc's support for it
       # (see https://stackoverflow.com/q/42916124/120898)
@@ -27,6 +25,8 @@ contributes:
       documentclass: book
       pagestyle: plain
       babel-lang: english
+      # Include the `csquotes` package, provides `\enquote`
+      csquotes: true
       classoption:
         - a4paper
         - 11pt
@@ -43,7 +43,6 @@ contributes:
       hyperrefoptions:
         - hidelinks
       colorlinks: false
-      # TODO: fix indexing of bib as subsection of appendices
       # TODO: HTML template?
       cite-method: natbib
       biblio-style: abbrvnat
