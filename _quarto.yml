@@ -6,6 +6,7 @@ bibliography: assets/references.bib
 execute:
   echo: false
   output: true
+highlight-style: assets/monochrome-bold.theme
 number-sections: true
 toc: true
 
@@ -24,7 +25,11 @@ format:
     year: 2021/2022
     supervisor: Fabrizio Granelli
     keep-tex: false
+    # Indent paragraphs instead of adding space between them
+    indent: true
     mainfont: TeX Gyre Pagella
+    monofontoptions:
+      - Scale=0.9
   html:
     theme: cosmo
 
