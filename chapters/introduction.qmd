@@ -1,0 +1,16 @@
+# Introduction
+
+## Background
+<!-- The collection and analysis of data samples from the radio frequency spectrum has always required considerable effort, even with partial automation, due to the inherent complexity and density of such data. Furthermore, complex systems based on analogic circuits were needed to process radio signals. This used to entail large investments in both manpower and capital at any scale, making spectrum analysis infeasible for hobbyists.
+
+It wasn't until 1992 when the architecture of a fully-digital radio transceiver (a radio capable of both transmission and reception) was first presented to the public by Joe Mitola @mitola_software_1992, paving the way for... -->
+
+Software-defined radio (SDR) is a technology that has been gaining attention in recent years due to its ability to revolutionize the way we design and operate radio communication systems. The history of SDR technology can be traced back to the 1980s, when advances in digital signal processing (DSP) made it possible to perform signal processing in software. At that time, SDR was still in its early stages, and the hardware technology available was limited. In the early 1990s, the first SDR prototypes were developed @mitola_software_1992, and the technology began to be used in military and defense applications.
+
+As the technology progressed, the cost of digital signal processors and memory decreased, and software became more advanced. This allowed for the development of more advanced SDR systems which could support a wide range of radio communication protocols and waveforms. In the late 1990s and early 2000s, SDR technology began to be adopted in the commercial sector for applications such as wireless networking and cellular communication systems.
+
+Today, SDR technology is being used in a wide range of applications, from amateur radio to satellite communication systems, and is increasingly becoming more accessible to the general public. SDR technology is a key enabler for emerging technologies such as the Internet of Things (IoT) and 5G communication systems. The potential benefits of SDR technology are significant, including greater flexibility, reduced development time and cost, and improved spectrum utilization.
+
+In today's world, radio frequency (RF) communication is the backbone of many critical infrastructures, with applications ranging from wireless networking to cellular communication systems. However, the increasing demand for wireless communication has led to a shortage of available spectrum, which can lead to interference and other problems. With this in mind, the motivation behind developing the OpenRFsense project is to create an experimental solution using modern SDR technologies for real-time spectrum monitoring and analysis.
+
+<!-- Through this project, we hope to demonstrate the potential of SDR technology and the value of open source software in advancing the field of radio communication systems. -->

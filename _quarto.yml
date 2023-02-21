@@ -11,13 +11,14 @@ number-sections: true
 toc: true
 
 book:
-  title: "OpenRFSense"
-  author: "Leonardo Baldin"
-  date: "15/03/2023"
+  title: OpenRFSense
+  author: Leonardo Baldin
+  date: 15/03/2023
   chapters:
     - index.qmd
-    - chapters/chapter1.qmd
+    - chapters/introduction.qmd
     # - chapters/appendices.qmd
+    - chapters/bibliography.qmd
 
 format:
   unitn-thesis-pdf:
@@ -34,8 +35,8 @@ format:
     theme: cosmo
 
 filters:
-  - d2
   - custom-appendices
+  - d2
 
 d2:
   path: bin/d2/bin/d2
