@@ -43,10 +43,6 @@ contributes:
       hyperrefoptions:
         - hidelinks
       colorlinks: false
-      # TODO: HTML template?
-      cite-method: natbib
-      biblio-style: abbrvnat
-      natbiboptions:
-        - comma
-        - numbers
-        - square
+      link-citations: true
+      citation-style:
+        - ./assets/ieee.csl
