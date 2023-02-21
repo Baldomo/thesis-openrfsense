@@ -45,4 +45,4 @@ contributes:
       colorlinks: false
       link-citations: true
       citation-style:
-        - ./assets/ieee.csl
+        - ./assets/ieee-with-url.csl
