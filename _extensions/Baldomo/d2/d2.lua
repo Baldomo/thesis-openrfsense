@@ -16,7 +16,14 @@ elseif FORMAT == "rtf" then
   mimetype = "image/png"
 end
 
-local d2_path = os.getenv("D2") or "d2"
+---Parsed metadata options. Will always be overridden by block-local attributes
+local options = {
+  layout = nil,
+  path = os.getenv("D2") or "d2",
+  pad = nil,
+  sketch = false,
+  theme = nil,
+}
 
 ---Renders a D2 code block contents to a specfic output format
 ---@param code string
@@ -29,7 +36,8 @@ local function render(code, ext, args)
   end
 
   table.insert(args, "-")
-  return pandoc.pipe(d2_path, args, code)
+  quarto.log.output(args)
+  return pandoc.pipe(options.path, args, code)
 end
 
 ---Parses extension configuration
@@ -38,9 +46,11 @@ function Meta(meta)
     return meta
   end
 
-  d2_path = pandoc.utils.stringify(
-    meta.d2.path or d2_path
-  )
+  options.path = pandoc.utils.stringify(meta.d2.path)
+  options.layout = meta.d2.layout and pandoc.utils.stringify(meta.d2.layout) or nil
+  options.pad = meta.d2.pad and pandoc.utils.stringify(meta.d2.pad) or nil
+  options.sketch = meta.d2.sketch or false
+  options.theme = meta.d2.layout and pandoc.utils.stringify(meta.d2.theme) or nil
 end
 
 ---Parses a code block and renders its contents to a `pandoc.Figure` containing
@@ -51,19 +61,19 @@ function CodeBlock(block)
   end
 
   local args = {}
-  if block.attributes["layout"] then
+  if block.attributes["layout"] or options.layout then
     table.insert(args, "-l")
-    table.insert(args, block.attributes["layout"])
+    table.insert(args, block.attributes["layout"] or options.layout)
   end
-  if block.attributes["theme"] then
+  if block.attributes["theme"] or options.theme then
     table.insert(args, "-t")
-    table.insert(args, block.attributes["theme"])
+    table.insert(args, block.attributes["theme"] or options.theme)
   end
-  if block.attributes["pad"] then
+  if block.attributes["pad"] or options.pad then
     table.insert(args, "--pad")
-    table.insert(args, block.attributes["pad"])
+    table.insert(args, block.attributes["pad"] or options.pad)
   end
-  if block.attributes["sketch"] then
+  if block.attributes["sketch"] or options.sketch then
     table.insert(args, "-s")
   end
 
@@ -79,23 +89,23 @@ function CodeBlock(block)
   pandoc.mediabag.insert(filename, mimetype, img)
 
   -- If the user defines a caption, read it as Markdown
-  local caption = block.attributes.caption
-    and pandoc.read(block.attributes.caption).blocks
+  local caption = block.attributes["fig-cap"]
+    and pandoc.read(block.attributes["fig-cap"]).blocks
     or pandoc.Blocks{}
   local alt = pandoc.utils.blocks_to_inlines(caption)
 
   if PANDOC_VERSION < 3 then
     -- A non-empty caption means that this image is a figure. We have to
-    -- set the image title to "fig:" for pandoc to treat it as such
-    local title = #caption > 0 and "fig:" or ""
+    -- set the image title to "fig-" for Quarto to treat it as such
+    local title = #caption > 0 and "fig-" or ""
 
     -- Transfer identifier and other relevant attributes from the code
     -- block to the image. The `name` is kept as an attribute.
     -- This allows a figure block starting with:
     --
-    --     {#fig:example .plantuml caption="Image created by **PlantUML**."}
+    --     {#fig-example .d2 fig-cap="Image created by **d2**."}
     --
-    -- to be referenced as @fig:example outside of the figure when used
+    -- to be referenced as @fig-example outside of the figure when used
     -- with `pandoc-crossref`
     local img_attr = {
       id = block.identifier,
@@ -105,7 +115,7 @@ function CodeBlock(block)
     }
 
     -- Create a new image for the document's structure. Attach the user's
-    -- caption. Also use a hack (fig:) to enforce pandoc to create a
+    -- caption. Also use a hack (fig-) to enforce pandoc to create a
     -- figure i.e. attach a caption to the image
     local img_obj = pandoc.Image(alt, filename, title, img_attr)
 
