@@ -11,11 +11,7 @@ contributes:
       block-headings: false
       # Templates and partials
       template: latex/template.tex
-      include-in-header:
-        text: |
-          \usepackage{plain}
-          \usepackage{setspace}
-          \usepackage{titlesec}
+      include-in-header: latex/tweaks.tex
       template-partials:
         - latex/before-body.tex
         - latex/biblio.tex
@@ -29,7 +25,7 @@ contributes:
       csquotes: true
       classoption:
         - a4paper
-        - 11pt
+        - 12pt
         - titlepage
         - twoside
         - openany

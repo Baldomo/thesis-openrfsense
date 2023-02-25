@@ -1,19 +1,19 @@
 -- The default format is SVG i.e. vector graphics:
 local filetype = "svg"
-local mimetype = "image/svg+xml"
+local mimetypes = {
+  png = "image/png",
+  svg = "image/svg+xml"
+}
 
 -- Check for output formats that potentially cannot use SVG
 -- vector graphics. In these cases, we use a different format
 -- such as PNG:
 if FORMAT == "docx" then
   filetype = "png"
-  mimetype = "image/png"
 elseif FORMAT == "pptx" then
   filetype = "png"
-  mimetype = "image/png"
 elseif FORMAT == "rtf" then
   filetype = "png"
-  mimetype = "image/png"
 end
 
 ---Parsed metadata options. Will always be overridden by block-local attributes
@@ -31,12 +31,11 @@ local options = {
 ---@param args table<string>
 ---@return string
 local function render(code, ext, args)
-  if ext ~= "svg" and ext ~= "png" then
+  if ext ~= "svg" then
     error(string.format("Conversion to %s not implemented", ext))
   end
 
   table.insert(args, "-")
-  quarto.log.output(args)
   return pandoc.pipe(options.path, args, code)
 end
 
@@ -46,11 +45,11 @@ function Meta(meta)
     return meta
   end
 
+  options.layout = meta.d2.layout and pandoc.utils.stringify(meta.d2.layout) or options.layout
   options.path = pandoc.utils.stringify(meta.d2.path)
-  options.layout = meta.d2.layout and pandoc.utils.stringify(meta.d2.layout) or nil
-  options.pad = meta.d2.pad and pandoc.utils.stringify(meta.d2.pad) or nil
-  options.sketch = meta.d2.sketch or false
-  options.theme = meta.d2.layout and pandoc.utils.stringify(meta.d2.theme) or nil
+  options.pad = meta.d2.pad and pandoc.utils.stringify(meta.d2.pad) or options.pad
+  options.sketch = meta.d2.sketch or options.sketch
+  options.theme = meta.d2.layout and pandoc.utils.stringify(meta.d2.theme) or options.theme
 end
 
 ---Parses a code block and renders its contents to a `pandoc.Figure` containing
@@ -81,12 +80,13 @@ function CodeBlock(block)
   if not (success and img) then
     quarto.log.error(img or "no image data has been returned")
     error "Image conversion failed, aborting"
+    return block
   end
 
   -- Create figure name by hashing the image content
   local filename = pandoc.sha1(img) .. "." .. filetype
   -- Store the data in the media bag
-  pandoc.mediabag.insert(filename, mimetype, img)
+  pandoc.mediabag.insert(filename, mimetypes[filetype], img)
 
   -- If the user defines a caption, read it as Markdown
   local caption = block.attributes["fig-cap"]

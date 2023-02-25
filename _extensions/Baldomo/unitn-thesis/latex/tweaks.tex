@@ -1,0 +1,21 @@
+% Additional required packages
+\usepackage{plain}
+\usepackage{setspace}
+\usepackage{titlesec}
+
+% Remove empty vertical space around quotes
+\renewcommand{\quote}{\list{}{\rightmargin=\leftmargin\topsep=0pt}\item\relax}
+
+% Define a changemargin block
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+% Change margin for the Shaded environment
+\renewenvironment{Shaded}{
+\begin{changemargin}{1cm}{1cm}
+  \begin{snugshade}
+}{
+  \end{snugshade}
+\end{changemargin}
+}
+% Change line number size
+\renewcommand{\theFancyVerbLine}{\small\arabic{FancyVerbLine}}
