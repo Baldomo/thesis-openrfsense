@@ -11,4 +11,6 @@ format:
     thanks: thanks to *Quarto*
     year: 2021/2022
     supervisor: Name Surname
+    # Better defaults for floats
+    float-fix: true
 ---
