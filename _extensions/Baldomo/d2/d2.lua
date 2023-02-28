@@ -1,23 +1,17 @@
+local system = require "pandoc.system"
+local with_temporary_directory = system.with_temporary_directory
+local with_working_directory = system.with_working_directory
+
 -- The default format is SVG i.e. vector graphics:
-local filetype = "svg"
+-- local filetype = "svg"
 local mimetypes = {
   png = "image/png",
   svg = "image/svg+xml"
 }
 
--- Check for output formats that potentially cannot use SVG
--- vector graphics. In these cases, we use a different format
--- such as PNG:
-if FORMAT == "docx" then
-  filetype = "png"
-elseif FORMAT == "pptx" then
-  filetype = "png"
-elseif FORMAT == "rtf" then
-  filetype = "png"
-end
-
 ---Parsed metadata options. Will always be overridden by block-local attributes
 local options = {
+  output = "svg",
   layout = nil,
   path = os.getenv("D2") or "d2",
   pad = nil,
@@ -25,18 +19,67 @@ local options = {
   theme = nil,
 }
 
+-- Check for output formats that potentially cannot use SVG
+-- vector graphics. In these cases, we use a different format
+-- such as PNG:
+if FORMAT == "docx" then
+  options.output = "png"
+elseif FORMAT == "pptx" then
+  options.output = "png"
+elseif FORMAT == "rtf" then
+  options.output = "png"
+end
+
 ---Renders a D2 code block contents to a specfic output format
 ---@param code string
 ---@param ext string
 ---@param args table<string>
 ---@return string
 local function render(code, ext, args)
-  if ext ~= "svg" then
-    error(string.format("Conversion to %s not implemented", ext))
+  if ext == "svg" then
+    table.insert(args, "-")
+    return pandoc.pipe(options.path, args, code)
   end
 
-  table.insert(args, "-")
-  return pandoc.pipe(options.path, args, code)
+  if ext == "png" then
+    error("PNG rendering is not yet working")
+
+    return with_temporary_directory("d2image", function (tmpdir)
+      return with_working_directory(tmpdir, function ()
+        local file_template = "%s/image.%s"
+        local d2file = file_template:format(tmpdir, "d2")
+        local outfile = file_template:format(tmpdir, "png")
+
+        -- Write the D2 code to file
+        local f = io.open(d2file, "w")
+        if not f then
+          error("could not write d2 code to file " .. d2file)
+        end
+        f:write(code)
+        f:close()
+
+        -- Run D2
+        table.insert(args, d2file)
+        table.insert(args, outfile)
+        quarto.log.output(options.path, ":", args)
+        pandoc.pipe(options.path, args, "")
+
+        -- Try to open and read the image
+        local img_data
+        local r = io.open(outfile, "rb")
+        if r then
+          img_data = r:read("*all")
+          r:close()
+        else
+          quarto.log.warning("could not read image from " .. outfile)
+        end
+
+        return img_data
+      end)
+    end)
+  end
+
+  error(string.format("Conversion to %s not implemented", ext))
 end
 
 ---Parses extension configuration
@@ -45,6 +88,7 @@ function Meta(meta)
     return meta
   end
 
+  options.output = meta.d2.output and pandoc.utils.stringify(meta.d2.output) or options.output
   options.layout = meta.d2.layout and pandoc.utils.stringify(meta.d2.layout) or options.layout
   options.path = pandoc.utils.stringify(meta.d2.path)
   options.pad = meta.d2.pad and pandoc.utils.stringify(meta.d2.pad) or options.pad
@@ -60,6 +104,9 @@ function CodeBlock(block)
   end
 
   local args = {}
+  if block.attributes["output"] then
+    options.output = block.attributes["output"]
+  end
   if block.attributes["layout"] or options.layout then
     table.insert(args, "-l")
     table.insert(args, block.attributes["layout"] or options.layout)
@@ -76,7 +123,7 @@ function CodeBlock(block)
     table.insert(args, "-s")
   end
 
-  local success, img = pcall(render, block.text, filetype, args)
+  local success, img = pcall(render, block.text, options.output, args)
   if not (success and img) then
     quarto.log.error(img or "no image data has been returned")
     error "Image conversion failed, aborting"
@@ -84,9 +131,9 @@ function CodeBlock(block)
   end
 
   -- Create figure name by hashing the image content
-  local filename = pandoc.sha1(img) .. "." .. filetype
+  local filename = pandoc.sha1(img) .. "." .. options.output
   -- Store the data in the media bag
-  pandoc.mediabag.insert(filename, mimetypes[filetype], img)
+  pandoc.mediabag.insert(filename, mimetypes[options.output], img)
 
   -- If the user defines a caption, read it as Markdown
   local caption = block.attributes["fig-cap"]
