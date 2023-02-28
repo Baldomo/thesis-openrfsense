@@ -1,4 +1,18 @@
 {
     "quarto.path": "bin/quarto/bin/quarto",
-    "quarto.lua.provideTypes": true
+    "quarto.lua.provideTypes": true,
+    "cSpell.enableFiletypes": [
+        "qmd",
+        "quarto"
+    ],
+    "cSpell.enabled": true,
+    "cSpell.words": [
+        "NATS"
+    ],
+    "cSpell.ignoreRegExpList": [
+        // LaTeX commands
+        "/\\\\[a-z]+/gi",
+        // Citations in pandoc format [@citation]
+        "/\\[@[a-zA-Z0-9]+\\]/gi"
+    ]
 }
