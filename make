@@ -10,8 +10,8 @@ output_dir="$makesh_script_dir/output"
 pandoc_version="3.0"
 pandoc="$bin_dir/pandoc/bin/pandoc"
 
-quarto_version="1.3.200"
-quarto="env QUARTO_PANDOC=$pandoc $bin_dir/quarto/bin/quarto"
+quarto_version="1.3.231"
+quarto="$bin_dir/quarto/bin/quarto"
 
 d2="$bin_dir/d2/bin/d2"
 
