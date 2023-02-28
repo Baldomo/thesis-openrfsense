@@ -3,21 +3,27 @@ project:
   output-dir: output
 
 bibliography: assets/references.bib
+crossref:
+  chapters: true
 execute:
   echo: false
   output: true
-highlight-style: assets/monochrome-bold.theme
 number-sections: true
 toc: true
 
 book:
-  title: OpenRFSense
+  title: OpenRFSense - Explorative data analysis using software-defined radios
   author: Leonardo Baldin
-  date: 15/03/2023
+  date: 2023-03-15
   chapters:
     - index.qmd
     - chapters/introduction.qmd
-    # - chapters/appendices.qmd
+    - chapters/system-architecture.qmd
+    - chapters/service-messaging.qmd
+    - chapters/user-interface.qmd
+    - chapters/data-collection-and-analysis.qmd
+    - chapters/conclusion-and-future-work.qmd
+    - chapters/appendices.qmd
     - chapters/bibliography.qmd
 
 format:
@@ -26,12 +32,20 @@ format:
     year: 2021/2022
     supervisor: Fabrizio Granelli
     keep-tex: false
+    # Font options
+    mainfont: TeX Gyre Pagella
+    # Figures
+    default-image-extension: pdf
+    float-fix: true
+    fig-align: center
+    fig-pos: "h!"
+    # Code block options
+    code-line-numbers: true
+    highlight-style: assets/monochrome-bold.theme
     # Indent paragraphs instead of adding space between them
     indent: true
-    mainfont: TeX Gyre Pagella
-    monofontoptions:
-      - Scale=0.9
   html:
+    default-image-extension: png
     theme: cosmo
 
 filters:
@@ -40,3 +54,5 @@ filters:
 
 d2:
   path: bin/d2/bin/d2
+  layout: elk
+  theme: 1

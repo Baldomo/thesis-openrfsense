@@ -1,0 +1,30 @@
+# Conclusion and future work
+OpenRFSense was developed as an experimental software suite powered by modern software-defined radio technology. The following sections contain some closing remarks and reflections about the project and the status of the SDR-based data analysis as a whole.
+
+## Evaluation of system performance and limitations
+As with any project, OpenRFSense has its limitations that must be acknowledged. Below are some of the limitations of the project.
+
+1. Coverage: OpenRFSense relies on users who can install and maintain their own sensors. As a result, there may be regions where the sensor density is low, leading to gaps in the collected data.
+2. Sensor accuracy: The accuracy of the collected data is dependent on the quality of the sensors installed. Low-quality sensors may produce unreliable data that could affect the accuracy of the analysis and interpretation of the collected data.
+3. Signal interference: Interference from other radio sources can tamper with the accuracy of the collected data. For example, electromagnetic radiation from other devices or sources could create a noisy signal that can be challenging to analyze.
+4. Cost: The cost of installing and maintaining the nodes could be a restraining factor, especially in regions where resources are limited.
+5. Security: The sensors collect data from the environment, and ensuring the security and privacy of the collected data is crucial. The project must ensure that the data collected is not misused or accessed by unauthorized individuals.
+6. Data quality: The data collected may not always be of high quality due to a variety of reasons such as environmental conditions, sensor errors, and data transmission errors. Therefore, it is essential to have mechanisms in place to ensure data quality control and filtering.
+
+## Applications of the project
+The collected spectrum data can be used for a wide range of applications, including radio frequency interference (RFI) identification, spectrum occupancy measurements, and wireless network planning.
+
+RFI identification is a major application of spectrum data. OpenRFSense provides a real-time view of the electromagnetic environment, allowing users to detect and locate interference sources. The data can also be used for spectrum monitoring, such as measuring the spectrum occupancy of various frequencies. This information can be used to identify underutilized spectrum bands, which can then be allocated for new services or applications.
+
+Another important application of the data is wireless network planning. OpenRFSense provides accurate and up-to-date information on the electromagnetic environment, allowing users to identify optimal locations for wireless access points or base stations. The data can also be used to optimize the configuration of said networks, such as adjusting the transmission power or selecting the most appropriate frequency band.
+
+Hobbyists and researchers have also been able to carry out more complex tasks thanks to SDR receivers, such as satellite tracking and image reception [@peraltaSatelliteTelemetryImage2018]. This proves SDR-sourced data to be useful even for longer range and higher gain spectrum analysis.
+
+## Future directions for research and development
+Being released as open-source software, OpenRFSense is not intended to be a finished, industrial-grade product. Some future areas in which the project could be improved or may need additional research are the following.
+
+1. Integration with other sensor networks: OpenRFSense can be integrated with other sensor networks, such as those monitoring air quality, water quality, and weather. Integration with these networks can provide a more comprehensive picture of the environment and the impact of electromagnetic radiation on it.
+2. Machine learning and AI: OpenRFSense can be enhanced with machine learning and artificial intelligence (AI) algorithms to improve the accuracy and speed of data analysis. These algorithms can help identify patterns and anomalies in the data and assist in making predictions and recommendations based on the data.
+3. Real-time monitoring: The current version of OpenRFSense only provides playback of recorded spectrum data. However, further development can be done to improve the latency and accuracy of the system, at the point of providing users with real-time signal visualization. This can require the use of more advanced sensors and improved data transmission technologies.
+4. Visualization and data analysis tools: OpenRFSense generates a large amount of data, and tools are needed to help users visualize and analyze the data. This can involve the development of new visualization techniques, such as heat maps and trend analysis, as well as ad-hoc data mining tools and other task-specific analysis tools.
+5. Standardization and data sharing: OpenRFSense can benefit from standardization of data collection and sharing protocols, such as a universal format for spectrum data storage. This can help ensure that data collected by different sensors and networks can be easily shared and combined to provide a more comprehensive picture of the environment.

@@ -1,5 +1,28 @@
 # Appendices {.custom-appendices}
+\titleformat{\chapter}{\normalfont\Huge\bfseries}{Appendix \thechapter}{1em}{}
 
-# Appendix 1
+# Code structure
+All the code for the OpenRFSense project is hosted on Github, a free Git repository hosting service with additional code and community management tools. At the time of writing, the various components are placed in the following repositories under the [OpenRFSense organization](https://github.com/openrfsense):
 
-Et officia ut excepteur quis aliqua dolor duis. Ea voluptate pariatur ad cillum mollit velit occaecat est cupidatat sint excepteur ullamco quis occaecat. Ullamco culpa pariatur irure exercitation nulla enim eiusmod mollit exercitation Lorem ut cillum ad. Deserunt minim occaecat culpa veniam ea amet laboris.
+* `backend`: source code and tooling for the backend service
+* `node`: source code and tooling for the node management software
+* `orfs-sensor`: source code for the signal recording software
+* `image`: various scripts and tooling to generate the pre-configured system image for Raspberry Pi boards
+* `openrfsense.github.io`: technical documentation for the project (see [Appendix @sec-techDoc])
+* `common`: shared code which would otherwise be duplicated in both node and backend
+
+# Project branding
+Special care was put behind giving an identity to the OpenRFSense project through graphic design. A simple but meaningful logo contains the abbreviated project name and a round symbology reminiscent of WiFi-associated commercial products.
+
+![Official OpenRFSense logo](/assets/logo-dark.svg){width=60%}
+
+The color palette has enough contrast to be accessible but maintains at least one saturated color.
+
+![Color palette](/assets/palette.svg)
+
+# Technical documentation {#sec-techDoc}
+All software components for the OpenRFSense project contain self-documenting code with numerous comments and additional language-specific documentation tooling (`godoc`). Moreover, additional user-oriented technical documentation has been written and is deployed automatically on Github's static file hosting service (Github Pages).
+
+The documentation is written in Markdown format and is rendered to a static website using the Jekyll program. It includes code blocks with ready-to-use examples to prepare deployments and configure the services before starting the system, together with overviews of the various components. All pages also feature a search widget which facilitates navigation through the text contents.
+
+![OpenRFSense documentation](/assets/docs){width=80%}

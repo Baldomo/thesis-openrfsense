@@ -1,0 +1,36 @@
+# Data collection and analysis
+Data collection is at the core of the OpenRFSense project and, as such, requires some complex and specialized components. Overall, the data collection procedure can be better explained as an ordered pipeline, which starts from the remote node.
+
+## Data acquisition
+The node software utilizes a set of low-level hardware APIs to interface with the SDR receiver(s) and collect the RF signals. The main data collection routine is handled by a customized version of a pre-existing Electrosense software, which interfaces with connected SDR devices and streams data towards an external destination.
+
+The data is collected in one of two forms:
+
+* raw spectral density ordered by frequency
+* spectral density averaged over an arbitrary number of seconds using Fast Fourier Transform (FFT)
+
+## Signal processing {#sec-signalProcessing}
+The signal processing component is responsible for cleaning up the collected RF signals and extracting the relevant features for analysis. The component utilizes a set of algorithms to filter out noise and interference from the collected signals. Once the signals are cleaned up, the component extracts relevant features such as the signal strength, modulation type, and frequency. At the time of writing, the following signal encodings can be preprocessed:
+
+* Aircraft Communications Addressing and Reporting System (ACARS)
+* LTE, both User Equipment-to-cell and cell-to-User Equipment
+* Mode S [@internationalcivilaviationorganizationManualModeSpecific2004] collision avoidance messages
+* Aeronautical Information Service (AIS) air traffic information
+* AM/FM radio
+
+## Data streaming
+The processed data is serialized in a JSON-based binary format (Apache Avro [@ApacheAvroDocumentation]), together with extra metadata such as:
+
+* time of recording
+* node hardware identifier and campaign identifier code
+* sensor hardware configuration (center frequency, antenna gain, estimated noise floor, etc.)
+
+The encoded packets are then sent over the Internet to the backend service through several raw TCP connections per receiver to maximize flow. Surprisingly, even low-cost modern SDR receivers tend to output large quantities of data (usually in the order of several megabytes per second). This requires the usage of clever throughput maximization algorithms such as TCP Fast Open [@radhakrishnanTCPFastOpen2011] and `SO_REUSEPORT`.
+
+## Data storage
+The cleaned up and feature-extracted data is received by the backend and partially deserialized to extract the node hardware identifier and campaign identifier code, which are used to derive a unique key for that packet to be used in storage. The binary-encoded data is then stored in a database embedded in the backend for later analysis. The data is written to disk in a structured format that allows for fast querying and analysis. The storage software component is explained in more detail in [@sec-signalStorage].
+
+## Analysis of spectrum data
+To analyze the collected spectrum data, several techniques can be employed. One approach is to use statistical methods to identify patterns or anomalies in the data. For example, signal strength and frequency distribution can be analyzed to detect unusual patterns, which may indicate the presence of interference sources. Another approach is to use machine learning algorithms to automatically classify different types of signals based on their frequency, bandwidth, and modulation. This can help to identify different types of signals, such as WiFi, Bluetooth, or cellular signals, and to detect any new or unknown signals.
+
+Overall, the collected spectrum data is a valuable resource for a wide range of applications. The different techniques for analyzing the data can provide useful insights into the electromagnetic environment, giving users easy access to dense and reasonably accurate research samples.
