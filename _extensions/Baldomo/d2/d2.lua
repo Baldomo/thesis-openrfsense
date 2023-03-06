@@ -182,7 +182,7 @@ function CodeBlock(block)
     local img_obj = pandoc.Image(alt, filename, "", img_attr)
 
     -- Create a figure that contains just this image
-    return pandoc.Figure(pandoc.Plain{img_obj}, caption, fig_attr)
+    return pandoc.Div{ pandoc.Figure(pandoc.Plain{img_obj}, caption, fig_attr) }
   end
 end
 
