@@ -6,6 +6,8 @@ shopt -s extglob nullglob globstar
 
 bin_dir="$makesh_script_dir/bin"
 output_dir="$makesh_script_dir/output"
+book_dir="$makesh_script_dir/book"
+slides_dir="$makesh_script_dir/slides"
 
 pandoc_version="3.0"
 pandoc="$bin_dir/pandoc/bin/pandoc"
@@ -80,19 +82,39 @@ make::bin_quarto() {
   msg::plain "rm -rf ~/.TinyTeX"
 }
 
-#:(html) Renders the project to a static website
-make::html() {
-  $quarto render --to html
+# Utility function to cd into a directory and render that project with Quarto
+# $1 : the format to render to
+# $2 : the directory containing the project (_quarto.yml)
+_render() {
+  pushd "$2" || msg::die "Cannot read directory %s" "$2"
+  $quarto render --to "$1"
+  popd
 }
 
-#:(pdf) Renders the project to the custom PDF thesis template format
-make::pdf() {
-  $quarto render --to unitn-thesis-pdf
+#:(book_html) Renders the thesis book to a static website
+make::book_html() {
+  _render "html" "$book_dir"
 }
 
-#:(dev) Starts a Quarto preview as PDF with the custom thesis format
-make::dev() {
-  $quarto preview "$makesh_script_dir" --render unitn-thesis-pdf 1>/dev/null
+#:(book_pdf) Renders the thesis book to the custom PDF template format
+make::book_pdf() {
+  _render "unitn-thesis-pdf" "$book_dir"
+}
+
+#:(book_dev) Starts a Quarto preview of the book as PDF
+#:(book_dev) with the custom thesis format
+make::book_dev() {
+  $quarto preview "$book_dir" --render unitn-thesis-pdf 1>/dev/null
+}
+
+#:(slides) Renders the slides to RevealJS
+make::slides() {
+  _render "unitn-thesis-revealjs" "$slides_dir"
+}
+
+#:(slides_dev) Starts a Quarto preview of the slides as RevealJS
+make::slides_dev() {
+  $quarto preview "$slides_dir" --render unitn-thesis-revealjs 1>/dev/null
 }
 
 #:(all) Downloads dependencies and renders the document as PDF
@@ -100,14 +122,17 @@ make::all() {
   lib::requires bin_d2
   lib::requires bin_pandoc
   lib::requires bin_quarto
-  lib::requires pdf
+
+  lib::requires book_pdf
+
+  lib::requires slides
 }
 
 #:(clean) Removes the binaries folder and all build caches
 make::clean() {
   rm -rf "$bin_dir"
   rm -rf "$output_dir"
-  rm -rf .quarto
+  rm -rf ./**/.quarto
 }
 
 source makesh/runtime.sh
