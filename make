@@ -9,10 +9,7 @@ output_dir="$makesh_script_dir/output"
 book_dir="$makesh_script_dir/book"
 slides_dir="$makesh_script_dir/slides"
 
-pandoc_version="3.0"
-pandoc="$bin_dir/pandoc/bin/pandoc"
-
-quarto_version="1.3.231"
+quarto_version="1.3.242"
 quarto="$bin_dir/quarto/bin/quarto"
 
 d2="$bin_dir/d2/bin/d2"
@@ -34,24 +31,6 @@ make::bin_d2() {
   msg::msg "Downloaded D2 installer to: ./%s" "${installer#"$makesh_script_dir/"}"
   chmod +x "$installer"
   "$installer" --prefix "$bin_dir/d2" --method standalone
-}
-
-#:(bin_pandoc) Downloads Pandoc version `$quarto_version` but only if the
-#:(bin_pandoc) current installation is a lower version
-make::bin_pandoc() {
-  lib::requires bindir
-  lib::check_file "$pandoc"
-
-  msg::msg "Downloading Pandoc v$pandoc_version"
-  wget -qO "$bin_dir"/pandoc.tar.gz \
-    "https://github.com/jgm/pandoc/releases/download/${pandoc_version}/pandoc-${pandoc_version}-linux-amd64.tar.gz"
-
-  msg::msg "Extracting Pandoc"
-  pushd "$bin_dir" >/dev/null
-  tar xzf pandoc.tar.gz
-  rm pandoc.tar.gz
-  mv "pandoc-${pandoc_version}" pandoc
-  popd >/dev/null
 }
 
 #:(bin_quarto) Downloads Quarto version `$quarto_version` but only if the
@@ -120,7 +99,6 @@ make::slides_dev() {
 #:(all) Downloads dependencies and renders the document as PDF
 make::all() {
   lib::requires bin_d2
-  lib::requires bin_pandoc
   lib::requires bin_quarto
 
   lib::requires book_pdf
