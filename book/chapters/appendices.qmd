@@ -14,7 +14,7 @@ All the code for the OpenRFSense project is hosted on Github, a free Git reposit
 # Project branding
 Special care was put behind giving an identity to the OpenRFSense project through graphic design. A simple but meaningful logo contains the abbreviated project name and a round symbology reminiscent of WiFi-associated commercial products.
 
-![Official OpenRFSense logo](/assets/logo-dark.svg){width=60%}
+![Official OpenRFSense logo](/assets/logos/openrf.svg){width=60%}
 
 The color palette has enough contrast to be accessible but maintains at least one saturated color.
 
@@ -25,4 +25,4 @@ All software components for the OpenRFSense project contain self-documenting cod
 
 The documentation is written in Markdown format and is rendered to a static website using the Jekyll program. It includes code blocks with ready-to-use examples to prepare deployments and configure the services before starting the system, together with overviews of the various components. All pages also feature a search widget which facilitates navigation through the text contents.
 
-![OpenRFSense documentation](/assets/docs){width=80%}
+![OpenRFSense documentation](/assets/screenshots/docs){width=80%}

@@ -34,7 +34,7 @@ backend.dashboard -> project documentation: {
 ### Dashboard
 The dashboard acts as the homepage of the UI. It is the first page served by the backend on the root address and is the first interactive element the user will be shown on connection to the system.
 
-![Dashboard](/assets/dashboard){width=80%}
+![Dashboard](/assets/screenshots/dashboard){width=80%}
 
 The first element presented by the UI is a table containing useful information about all nodes connected to the backend, such as node location and unique identifier. Each node can be selected with a checkbox to take part in a measurement campaign (configurable through a pop-up modal dialog). Every row also contains a link to a page which visualizes a node's metrics and location in more detail (see [@sec-nodeOverview]).
 
@@ -43,7 +43,7 @@ The homepage of the UI provides a map of the world, with the locations of all th
 ### Node overview page {#sec-nodeOverview}
 A node-specific overview page is also generated for each node connected to the backend and the messaging system. This page generally contains all required node metrics returned by a request to the node, as well as more detailed node system information if available (see [@sec-metrics]). The node overview page also contains a map but only showing a single marker corresponding to the node being queried and centered on the node's location, if provided.
 
-![Node overview page](/assets/node){width=80%}
+![Node overview page](/assets/screenshots/node){width=80%}
 
 A table containing a list of all past and ongoing measurement campaigns is also provided to the user, with management controls on each row to download the signal data in various formats or delete it from the storage. The controls are non-interactive if the campaign is still ongoing.
 
@@ -52,14 +52,14 @@ A table containing a list of all past and ongoing measurement campaigns is also 
 ### API documentation
 To make the REST API (defined in [@sec-restApi]) easily accessible to users and external applications, a documentation page is automatically generated using Swagger (OpenAPI specification version 2.0 [@OpenAPISpecification2]). The generated page contains all the necessary documentation to query data and send commands to the backend, complete with examples and request and response formats in textual JSON.
 
-![API documentation](/assets/api-docs){width=80%}
+![API documentation](/assets/screenshots/api-docs){width=80%}
 
 {{< pagebreak >}}
 
 ### Node system interface {#sec-nodeUi}
 Each node's local management UI provides a high-level management over the host system running the node. As such, it must present important information in logical order, starting with connection status (both WiFi and physical). On remote devices, this facilitates troubleshooting and provides an alternative method of restoring connection to a node.
 
-![Node system management page](/assets/node-ui.png){width=80%}
+![Node system management page](/assets/screenshots/node-ui.png){width=80%}
 
 A simple text editor is also provided for the node management software configuration. Each change followed by a click on the "Save" button will write the changes to the configuration file and reboot the system.
 
