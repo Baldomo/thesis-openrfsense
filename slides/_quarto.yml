@@ -1,0 +1,32 @@
+project:
+  type: default
+  output-dir: ../output
+
+title: OpenRFSense
+subtitle: "**Explorative data analysis** using software-defined radios"
+author: Leonardo Baldin
+lang: it
+
+format:
+  unitn-thesis-revealjs:
+    supervisor: Fabrizio Granelli
+    code-line-numbers: true
+    title-logo:
+      file: ./assets/logos/openrf.svg
+      widths: ["80%", "80%"]
+      logo-styles:
+        - "padding-bottom: 2rem"
+    # Disable visual clutter
+    progress: false
+    menu: false
+    # Print fragments on new pages
+    pdf-separate-fragments: true
+
+filters:
+  - d2
+
+d2:
+  path: ../bin/d2/bin/d2
+  layout: elk
+  theme: 1
+  pad: 20

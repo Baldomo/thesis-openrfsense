@@ -1,0 +1,360 @@
+## Software-defined radio
+**Hardware** in grado di digitalizzare qualunque genere di segnale radio con alta precisione
+
+Moduli radio programmabili dall'utente
+
+I dati ottenuti sono elaborati via **software**
+
+```{.d2 width="85%" fig-cap="Funzionamento di un ricevitore SDR"}
+direction: right
+
+antenna.shape: cloud
+utente.shape: person
+
+antenna -- mixer -- ADC -- FPGA/DSP -- utente
+```
+
+::: {.notes}
+Software-defined radio é una classe di tecnologie miste hardware/software ideate e sviluppate dagli anni 90 ad oggi
+
+Possono generalmente essere riassunte in: `...`
+
+In figura è rappresentato il funzionamento di alto livello hardware di un modulo SDR
+:::
+
+---
+
+## Software-defined radio - utilizzi {.r-stretch .flex .flex-col .justify-evenly .pb-8}
+
+. . .
+
+::: {.tight}
+Misurazione delle **interferenze** radio su qualunque frequenza
+
+- Occupazione delle bande in reti wireless
+:::
+
+. . .
+
+::: {.tight}
+**Registrazione** e decodifica di segnali analogici e digitali
+
+- Aircraft Communications Addressing and Reporting System (ACARS) per tracciamento velivoli
+:::
+
+. . .
+
+::: {.tight}
+Comunicazione con **ricevitori ignoti** (ad esempio satelliti)
+
+- Si veda ["the ISEE-3 reboot project"](https://youtu.be/NTljlMH-0oM)
+:::
+
+::: {.notes}
+Essendo una tecnologia estremamente versatile per definizione, e recentemente di facile adozione a qualunque livello di professionalità, si possono trovare interessanti utilizzi pratici tra cui:
+
+1. `...` o anche, in pratica, misurazione di densità di persone in un luogo misurando interferenze in bande delle radio dei cellulari
+
+2. `...` usato da svariate applicazioni di tracciamento dei voli e quasi tutte le compagnie aeree per piccoli sistemi integrati
+
+3. `...` in cui 2 ricercatori hanno comandato da remoto un satellite obsoleto e cambiato la sua orbita
+:::
+
+---
+
+## Obiettivi {.r-stretch .flex .flex-col .justify-evenly .pb-8}
+
+**Semplificare** registrazione di dati dallo spettro radio e rendere i risultati facilmente analizzabili
+
+**Ridurre** le risorse necessarie per analisi radio in larga scala, sia hardware che software
+
+**Sperimentare** l'utilizzo di tecnologie contemporanee per creare una serie di software che sfruttano SDR
+
+::: {.notes}
+In luce dei vari utilizzi delle SDR, questi sono gli obiettivi del progetto OpenRFSense: `...`
+:::
+
+---
+
+## Hardware
+Ogni **"nodo"** é un dispositivo embedded o a bassa potenza (ad esempio Raspberry Pi) dotato di un ricevitore SDR
+
+::: {.tight}
+Un ricevitore moderno come [**RTL-SDR**](https://www.rtl-sdr.com/about-rtl-sdr/){.external} é facilmente reperibile e con specifiche più che adeguate per misurazioni radio su scala medio-piccola
+
+::: {.flex .flex-row .items-baseline .justify-evenly}
+![Un ricevitore RTL-SDR](/assets/rtl-sdr.png){fig-align="center" .w-96}
+
+![Un Raspberry Pi](/assets/raspberry-pi.png){fig-align="center" .w-80}
+:::
+
+:::
+
+::: {.notes}
+Il progetto è implementato principalmente in software ma richiede 2 componenti fondamentali: `...`
+
+In aggiunta, occorre un server centrale per il coordinamento, che sarà spiegato nelle prossime slide
+:::
+
+---
+
+## {.smaller}
+
+::: {.columns}
+
+::: {.column width="45%" .pt-20}
+![Una vista "a cascata" dei segnali](/assets/waterfall.png){fig-align="center" .rounded-lg .drop-shadow-lg}
+:::
+
+::: {.column width="55%" .pt-24}
+
+### Analisi dati
+
+::: {.tight}
+I dati vengono registrati in uno dei seguenti formati
+
+1. Densità spettrale "grezza" su una **specifica frequenza**
+2. **Medie di densità** ottenute tramite FFT in un periodo di tempo arbitrario e un intervallo di frequenze, **ordinate** per frequenza e momento di acquisizione
+:::
+:::
+
+:::
+
+::: {.notes}
+Il fulcro centrale del progetto è rendere disponibili dati registrati dalle frequenze radio. Di questo si occupano i "nodi".
+
+`...`
+:::
+
+---
+
+## Trasferimento dati
+
+Anche moduli SDR economici e facilmente reperibili producono una **grande quantità** di dati
+
+Tramite varie strategie di massimizzazione del traffico di rete, i dati sono trasferiti dai **nodi** al **backend** tramite TCP
+
+Il dati sono salvati in RAM, poi su disco, dal servizio backend sotto forma di un **key-value store**
+
+::: {.notes}
+Lo spostamento di dati radio pone alcune interessanti "sfide" informatiche, perché: `...`
+:::
+
+---
+
+::: {.columns}
+
+::: {.column width="30%"}
+
+::: {.flex .flex-col .justify-around .align-center .tight .w-64 .pt-12}
+![](/assets/logos/go.svg){fig-align="center" .w-70}
+
+![](/assets/logos/docker.png){fig-align="center" .w-full .ml-12}
+:::
+
+:::
+
+::: {.column width="70%" .pt-24 .tight}
+### Software - backend
+Il backend *deve*
+
+::: {.incremental}
+- **Controllare** remotamente i nodi
+- **Ricevere** registrazioni radio e salvare i dati su disco
+- **Mostrare** un'interfaccia di controllo all'utente
+:::
+
+:::
+
+:::
+
+::: {.notes}
+Il software di backend viene installato ed eseguito su un server centrale raggiungibile dai nodi. `...`
+
+A lato sono rappresentate 2 delle principali tecnologie che sono state usate per sviluppare ed eseguire il software di backend:
+
+- il linguaggio Go, creato appositamente da Google per sviluppo backend
+- Docker, un software di gestione container
+:::
+
+---
+
+::: {.columns}
+
+::: {.column width="40%"}
+
+```{.d2 width="90%" fig-align="center"}
+shape: sequence_diagram
+
+backend
+nodo
+
+NATS: {
+  backend -> nodo: JSON
+  nodo -> backend: JSON
+}
+
+TCP/HTTP: {
+  nodo -> backend: dati radio {
+    style: {
+      stroke-dash: 3
+    }
+  }
+}
+```
+
+:::
+
+::: {.column width="60%" .pt-24 .tight}
+### Software - nodi
+Ogni nodo *deve*
+
+::: {.incremental}
+- **Scambiare** messaggi di servizio con il backend
+- **Eseguire** comandi arbitrari
+- **Inviare** misurazioni radio al backend su richiesta
+:::
+
+:::
+
+:::
+
+::: {.notes}
+I nodi svolgono funzioni non meno importanti, anche se tenute al minimo per mantenere la "leggerezza" dei processi in esecuzione. `...`
+:::
+
+---
+
+## Interfaccia utente
+Un'interfaccia efficiente e accessibile deve permettere a qualunque utente di **navigare** tra le funzioni di un sistema complesso
+
+::: {.quote .px-16 .pt-4}
+> An idiot admires complexity, a genius admires simplicity
+>
+> Terry A. Davis
+:::
+
+::: {.notes}
+Un software distribuito come OpenRFSense può sicuramente essere eseguito e configurato da riga di comando, ma un'interfaccia utente generalmente aumenta la produttività e abbassa la barriera di ingresso per qualunque utente. Si può sicuramente affermare che `...`
+
+Seguiranno alcuni screenshot delle schermate più rilevanti dell'interfaccia utente
+:::
+
+---
+
+## {.smaller visibility="uncounted"}
+
+::: {.columns}
+
+::: {.column width="35%" .pt-48}
+### Homepage
+La homepage permette il **controllo remoto** della flotta di nodi
+:::
+
+::: {.column width="65%"}
+![](/assets/screenshots/dashboard){fig-align="center" .rounded-lg .drop-shadow-lg}
+:::
+
+:::
+
+::: {.notes}
+`...` oltre a gestire la programmazione temporale di registrazioni radio, definendone data e ora di partenza e altri parametri di registrazione
+:::
+
+---
+
+## {.smaller visibility="uncounted"}
+
+::: {.columns}
+
+::: {.column width="35%" .pt-48}
+### Vista dati
+Ogni nodo viene **monitorato** e fornisce registrazioni radio scaricabili
+:::
+
+::: {.column width="65%"}
+![](/assets/screenshots/node){fig-align="center" .rounded-lg .drop-shadow-lg}
+:::
+
+:::
+
+::: {.notes}
+Viene fornita all'utente anche una vista "a cascata" della registrazione
+:::
+
+---
+
+## {.smaller visibility="uncounted"}
+
+::: {.columns}
+
+::: {.column width="35%" .pt-48}
+### Configurazione {.mr-0}
+Ogni nodo fornisce un'interfaccia di **configurazione** del sistema
+:::
+
+::: {.column width="65%"}
+![](/assets/screenshots/node-ui){fig-align="center" .rounded-lg .drop-shadow-lg}
+:::
+
+:::
+
+::: {.notes}
+`...`
+
+Quest interfaccia viene esposta solo sul network locale del nodo per ragioni di sicurezza
+:::
+
+---
+
+## Sommario {.smaller}
+
+::: {.r-stretch .flex .flex-col .justify-evenly .pb-8}
+
+::: {.tight .fragment}
+É stato progettato un sistema client-server ("backend") che
+
+- sfrutta una tecnologia moderna per **messaggistica** di servizio (NATS), con messaggi in formato stabile e documentato (JSON)
+- **gestisce** i dati e ne fornisce l'**accesso** tramite uno standard del Web (REST)
+:::
+
+::: {.tight .fragment}
+É stato implementato software di basso livello ("node") che
+
+- permette il **controllo remoto** di una macchina (nodo)
+- si interfaccia con dispositivi **SDR** per l'acquisizione di dati radio
+:::
+
+::: {.fragment}
+Sono state ideate e sviluppate **interfacce grafiche** ad uso degli utenti del servizio, basate su tecnologie Web e su principi di **accessibilità**
+:::
+
+:::
+
+::: {.notes}
+Per concludere: `...`
+
+Vorrei inoltre aggiungere che tutto il software sviluppato o modificati ai fini di questo progetto è documentato estensivamente e reso open source sulla piattaforma Github
+:::
+
+---
+
+## {visibility="uncounted" .center .quarto-title-block}
+
+```{=html}
+<div class="quarto-title-logo-block">
+  <div class="quarto-title-logo pb-12 grow">
+    <img src="./assets/logos/openrf.svg" alt="Title logo">
+  </div>
+  <div class="divider my-8 grow-0"></div>
+  <div class="quarto-title-subtitle grow">
+    <p class="subtitle text-5xl">
+      <strong>Grazie</strong> per l'attenzione
+    </p>
+  </div>
+</div>
+```
+
+::: {.notes}
+Ringrazio tutti i presenti per l'attenzione
+:::
