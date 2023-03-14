@@ -1,0 +1,65 @@
+<section id="$idprefix$title-slide"$for(title-slide-attributes/pairs)$ $it.key$="$it.value$"$endfor$ class="quarto-title-block">
+$if(title-logo)$
+<div class="quarto-title-logo-block">
+  <div class="quarto-title-logo" style="
+    $if(title-logo.widths)$width: $title-logo.widths/first$;$endif$
+    $if(title-logo.logo-styles)$$title-logo.logo-styles[; ]$$endif$
+  ">
+    <img src="$title-logo.file$" alt="Title logo">
+  </div>
+  $if(subtitle)$
+  <div class="divider"></div>
+  <div class="quarto-title-subtitle" style="
+    $if(title-logo.widths)$width: $title-logo.widths/last$;$endif$
+    $if(title-logo.subtitle-styles)$$title-logo.subtitle-styles[; ]$$endif$
+  ">
+    <p class="subtitle">$subtitle$</p>
+  </div>
+  $endif$
+</div>
+$else$
+<h1 class="title">$title$</h1>
+$if(subtitle)$
+<p class="subtitle">$subtitle$</p>
+$endif$
+$endif$
+
+<div class="quarto-title-authors">
+  $for(by-author)$
+  <div class="quarto-title-author">
+    <div class="quarto-title-author-title">
+    $if(by-author.title)$
+      $by-author.title$
+    $else$
+      Relatore
+    $endif$
+    </div>
+    <div class="quarto-title-author-name">
+    $if(by-author.url)$<a href="$by-author.url$">$endif$
+    $if(by-author.name.literal)$$by-author.name.literal$$endif$
+    $if(by-author.url)$</a>$endif$
+    </div>
+  </div>
+  $endfor$
+  $if(supervisor)$
+  <div class="quarto-title-author">
+    <div class="quarto-title-author-title">
+      $if(supervisor.title)$
+        $supervisor.title$
+      $else$
+        Supervisore
+      $endif$
+      </div>
+      <div class="quarto-title-author-name">
+      $if(supervisor.url)$<a href="$supervisor.url$">$endif$
+      $if(supervisor.name.literal)$$supervisor.name.literal$$else$$supervisor$$endif$
+      $if(supervisor.url)$</a>$endif$
+      </div>
+  </div>
+  $endif$
+</div>
+
+$if(date)$
+  <p class="date">$date$</p>
+$endif$
+</section>

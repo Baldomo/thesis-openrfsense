@@ -1,0 +1,171 @@
+/*-- scss:defaults --*/
+@import "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Open+Sans:wght@600;800&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@200..800&display=swap";
+
+$font-family-sans-serif: "Inter", sans-serif !default;
+$presentation-heading-font: "Open Sans", sans-serif !default;
+$presentation-heading-font-weight: 800 !default;
+$presentation-block-margin: 30px !default;
+
+$link-color: #222;
+$external-link-icon-size: 1.4rem !default;
+
+/*-- scss:rules --*/
+$presentation-author-block-padding-left: if(
+  $presentation-title-slide-text-align != left,
+  0.5em,
+  0
+);
+$presentation-author-block-padding-right: if(
+  $presentation-title-slide-text-align != right,
+  0.5em,
+  0
+);
+
+.reveal {
+  // Larger slide numbers
+  .slide-number {
+    font-size: $presentation-font-size-root * 0.7 !important;
+  }
+
+  // Custom external link icon
+  a.external::after {
+    height: $external-link-icon-size;
+    width: $external-link-icon-size;
+    margin-left: .1rem;
+    vertical-align: -0.1em;
+    background-size: $external-link-icon-size $external-link-icon-size;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-link' width='24' height='24' viewBox='0 0 24 24' stroke-width='2' stroke='currentColor' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Cpath d='M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5' /%3E%3Cpath d='M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5' /%3E%3C/svg%3E");
+  }
+
+  // Figure fixes
+  .quarto-figure figure {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    p {
+      flex-grow: 1;
+
+      img {
+        display: block;
+        height: 100% !important;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    figcaption {
+      color: $text-muted;
+      text-align: center;
+      margin-top: 0;
+    }
+  }
+
+  // Horizontal centering for all captions
+  p.caption {
+    color: $text-muted;
+    text-align: center;
+    margin-top: 0;
+  }
+
+  // Fix left margin for all elements inside a right .column
+  .columns > .column:last-child > :not(ul, ol) {
+    margin-left: 3rem;
+  }
+
+  // Custom block quotes
+  .quote {
+    blockquote {
+      font-size: $presentation-font-size-root * 0.8;
+      font-style: italic;
+      color: scale-color($body-color, $lightness: 20%);
+      background-color: scale-color($body-color, $lightness: 95%);
+      border-left: 4px solid scale-color($link-color, $lightness: 20%);
+      padding-left: 3rem;
+
+      & p:last-of-type {
+        font-size: 0.9em;
+        font-style: normal;
+        font-weight: bold;
+        margin-top: 1em;
+      }
+    }
+  }
+
+  // Custom .tight class which deleted bottom margin from all direct children
+  // of a container. Also adds left padding to lists which come after another
+  // element
+  .tight {
+    > * {
+      margin-bottom: 0 !important;
+    }
+
+    ol, ul {
+      padding: 0 2rem;
+    }
+  }
+
+  // Custom dual-element title block with logo and subtitle
+  .quarto-title-block {
+    .quarto-title-logo-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      gap: 4rem;
+      width: 100%;
+
+      > * {
+        flex-grow: 1;
+      }
+
+      .quarto-title-logo > img {
+        margin: 0 0 0 auto;
+      }
+
+      .divider {
+        border-left: 2px solid scale-color($link-color, $lightness: 80%);
+        margin: 1rem 0;
+        align-self: stretch;
+      }
+
+      .subtitle {
+        font-family: $presentation-heading-font;
+        text-align: left;
+        margin: 0;
+        margin-bottom: 0 !important;
+        height: 100%;
+      }
+    }
+
+    .quarto-title-authors {
+      padding-top: 4em;
+      display: flex;
+      justify-content: space-evenly;
+      font-size: $presentation-font-size-root * 0.7;
+
+      .quarto-title-author {
+        padding-left: $presentation-author-block-padding-left;
+        padding-right: $presentation-author-block-padding-right;
+
+        a,
+        a:hover,
+        a:visited,
+        a:active {
+          color: inherit;
+          text-decoration: none;
+        }
+
+        .quarto-title-author-title {
+          margin-bottom: 0.1rem;
+        }
+
+        .quarto-title-author-name {
+          margin-bottom: 0.1rem;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

@@ -42,3 +42,25 @@ contributes:
       link-citations: true
       citation-style:
         - ./assets/ieee-with-url.csl
+    revealjs:
+      template-partials:
+        - revealjs/title-slide.html
+      # Add TailwindCSS
+      include-in-header:
+        - text: <script src="https://cdn.tailwindcss.com"></script>
+        - text: |
+            <script>
+              tailwind.config = {
+                important: true,
+              }
+            </script>
+      # Layout
+      theme: ./revealjs/theme.scss
+      width: 1200
+      slide-number: true
+      # Links
+      link-external-icon: true
+      link-external-newwindow: true
+      # Do not overflow tall slides to a new page when printing
+      pdf-max-pages-per-slide: 1
+
