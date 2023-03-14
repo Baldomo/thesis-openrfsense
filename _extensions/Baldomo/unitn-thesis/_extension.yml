@@ -27,7 +27,7 @@ contributes:
         - a4paper
         - 12pt
         - titlepage
-        - twoside
+        - oneside
         - openany
       geometry:
         - paperheight = 29.7cm
