@@ -64,9 +64,10 @@ make::bin_quarto() {
 # Utility function to cd into a directory and render that project with Quarto
 # $1 : the format to render to
 # $2 : the directory containing the project (_quarto.yml)
+# $@ : all other arguments are appended verbatim to the Quarto command
 _render() {
   pushd "$2" || msg::die "Cannot read directory %s" "$2"
-  $quarto render --to "$1"
+  $quarto render --to "$1" "${@:3}"
   popd
 }
 
@@ -75,8 +76,8 @@ make::book_html() {
   _render "html" "$book_dir"
 }
 
-#:(book_pdf) Renders the thesis book to the custom PDF template format
-make::book_pdf() {
+#:(book) Renders the thesis book to the custom PDF template format
+make::book() {
   _render "unitn-thesis-pdf" "$book_dir"
 }
 
@@ -88,7 +89,7 @@ make::book_dev() {
 
 #:(slides) Renders the slides to RevealJS
 make::slides() {
-  _render "unitn-thesis-revealjs" "$slides_dir"
+  _render "unitn-thesis-revealjs" "$slides_dir" -M embed-resources:true
 }
 
 #:(slides_dev) Starts a Quarto preview of the slides as RevealJS
@@ -101,8 +102,7 @@ make::all() {
   lib::requires bin_d2
   lib::requires bin_quarto
 
-  lib::requires book_pdf
-
+  lib::requires book
   lib::requires slides
 }
 
