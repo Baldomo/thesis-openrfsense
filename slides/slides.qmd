@@ -71,7 +71,7 @@ Essendo una tecnologia estremamente versatile per definizione, e recentemente di
 **Sperimentare** l'utilizzo di tecnologie contemporanee per creare una serie di software che sfruttano SDR
 
 ::: {.notes}
-In luce dei vari utilizzi delle SDR, questi sono gli obiettivi del progetto OpenRFSense: `...`
+Alla luce dei vari utilizzi delle SDR, questi sono gli obiettivi del progetto OpenRFSense: `...`
 :::
 
 ---
@@ -173,7 +173,7 @@ Il software di backend viene installato ed eseguito su un server centrale raggiu
 
 A lato sono rappresentate 2 delle principali tecnologie che sono state usate per sviluppare ed eseguire il software di backend:
 
-- il linguaggio Go, creato appositamente da Google per sviluppo backend
+- il linguaggio Go, creato appositamente da Google per sviluppo backend (2009)
 - Docker, un software di gestione container
 :::
 
@@ -302,7 +302,7 @@ Ogni nodo fornisce un'interfaccia di **configurazione** del sistema
 ::: {.notes}
 `...`
 
-Quest interfaccia viene esposta solo sul network locale del nodo per ragioni di sicurezza
+Quest'interfaccia viene esposta solo sul network locale del nodo per ragioni di sicurezza
 :::
 
 ---
@@ -356,5 +356,97 @@ Vorrei inoltre aggiungere che tutto il software sviluppato o modificati ai fini 
 ```
 
 ::: {.notes}
-Ringrazio tutti i presenti per l'attenzione
+Ringrazio i presenti per l'attenzione
+:::
+
+---
+
+## {.smaller visibility="uncounted"}
+
+::: {.columns}
+
+::: {.column width="25%" .pt-40}
+![](/assets/logos/badgerdb.png){fig-align="center"}
+:::
+
+::: {.column width="75%" .pt-16}
+### BadgerDB
+Un **key-value store** svilppato da *Dgraph* che memorizza dati in una struttura simile a una `Map`{.text-black}, tenendo traccia dei rapporti chiave-valore usando alberi LSM in RAM
+
+Permette scrittura e lettura **molto veloci** perché non provvede un motore di query relazionale come database basati su SQL
+
+::: {.tight}
+**Considerazioni**
+
+- Ottimizzato per **SSD** moderni e processori **multi-core**
+- Sviluppato in Go e **open source**
+:::
+
+:::
+
+:::
+
+::: {.notes}
+:::
+
+---
+
+## {.smaller visibility="uncounted"}
+
+::: {.columns}
+
+::: {.column .tight width="25%"}
+![](/assets/logos/go.svg){fig-align="center"}
+
+![](/assets/logos/gopher.png){fig-align="center" width="60%"}
+:::
+
+::: {.column width="75%" .pt-12}
+### Go
+Linguaggio di programmazione reso open-source da **Google** nel 2009 e in rapida adozione professionale
+
+Creato appositamente per **sviluppo backend** su macchine multi-core e interconnesse da reti moderne
+
+::: {.tight}
+**Considerazioni**
+
+- Estremamente **performante** su macchine multi-core
+- Sistema di tipi "severo" per assicurare **correttezza**
+- Gestione **automatica** della memoria ("garbage collection")
+:::
+
+:::
+
+:::
+
+::: {.notes}
+:::
+
+---
+
+## {.smaller visibility="uncounted"}
+
+::: {.columns}
+
+::: {.column .tight width="25%" .pt-48}
+![](/assets/logos/nats.svg){fig-align="center" width="85%"}
+:::
+
+::: {.column width="75%" .pt-24}
+### NATS
+Sistema di **messaggistica** sviluppato in Go e nato come alternativa a MQTT, basato su uno o più server centrali e un numero arbitrario di client
+
+::: {.tight}
+**Considerazioni**
+
+- **Garanzie** di spedizione messaggi in caso di perdita dati
+- Architettura di rete **flessibile**
+- **Rigenerazione** delle connessioni se interrotte
+:::
+
+:::
+
+:::
+
+::: {.notes}
 :::
